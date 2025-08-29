@@ -11,13 +11,17 @@ app.use(express.json());
 
 // Routers
 const departmentsRouter = require('./router/departments_r/departments_r');
-const subDeptRouter = require('./router/departments_r/subdept_r');   // ✅ new
+const subDeptRouter = require('./router/departments_r/subdept_r');  
 
 const dbService = new DatabaseService();
 
+const classRouter = require('./router/departments_r/class_r');        
+app.use('/university/classes', classRouter);           
+
+
 // app.use(express.static(path.join(__dirname, 'public')));
 app.use('/university/departments', departmentsRouter);
-app.use('/university/subdepartments', subDeptRouter);  // ✅ new
+app.use('/university/subdepartments', subDeptRouter);  
 
 // login-register routes
 app.post('/login', (req, res) => userController.login(req, res));
