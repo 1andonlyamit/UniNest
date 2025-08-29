@@ -1,5 +1,5 @@
-const CompanyModel = require('../model/company_m');
-const emailService = require('../services/emailService');
+const CompanyModel = require('../../model/company_m/company_m');
+const emailService = require('../../services/emailService');
 const crypto = require('crypto');
 
 class CompanyController {
