@@ -1,6 +1,6 @@
 class DepartmentsController {
     constructor() {
-        this.departmentModel = new (require("../model/departments_m"));
+        this.departmentModel = new (require("../../model/departments_m/departments_m"));
     }
 
     // CREATE
