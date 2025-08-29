@@ -1,4 +1,4 @@
-CREATE TABLE students (
+CREATE TABLE IF NOT EXISTS students (
     id INT AUTO_INCREMENT PRIMARY KEY,
     enrollment_num VARCHAR(100) UNIQUE NOT NULL,
     class_id INT NOT NULL,
@@ -9,7 +9,6 @@ CREATE TABLE students (
     is_email_verified BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    CONSTRAINT fk_student_user FOREIGN KEY (user_id) REFERENCES users(id),
     CONSTRAINT fk_student_class FOREIGN KEY (class_id) REFERENCES classes(id),
     CONSTRAINT fk_student_role FOREIGN KEY (role_id) REFERENCES roles(id)
 );
