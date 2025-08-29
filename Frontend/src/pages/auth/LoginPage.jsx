@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthForm from "../../components/forms/AuthForm";
 import { loginApi, saveAuth } from "../../api/auth";
+import { useToast } from "../../context/ToastContext";
 
 const roleIdToLanding = {
   1: "/admin",
@@ -13,6 +14,7 @@ const roleIdToLanding = {
 export default function LoginPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const { showSuccess, showError } = useToast();
 
   const handleLogin = async ({ role_id, email, password }) => {
     setLoading(true);
@@ -20,7 +22,17 @@ export default function LoginPage() {
       const data = await loginApi({ role_id, email, password });
       // Store the raw response and role_id for guards
       saveAuth({ user: data });
-      navigate(roleIdToLanding[data.role_id] || "/");
+      
+      // Show success message
+      showSuccess(`Welcome back, ${data.name || 'User'}! Redirecting...`, 3000);
+      
+      // Navigate after a short delay to show the toast
+      setTimeout(() => {
+        navigate(roleIdToLanding[data.role_id] || "/");
+      }, 1000);
+    } catch (error) {
+      // Show error message
+      showError(error.message || 'Login failed. Please try again.');
     } finally {
       setLoading(false);
     }

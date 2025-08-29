@@ -11,6 +11,7 @@ import {
   GraduationCap,
   Building2
 } from 'lucide-react'
+import Dashboard from '../pages/universityPages/Dashboard'
 
 // Mock components for demonstration
 const MockLink = ({ to, children, className, onClick }) => (
@@ -232,7 +233,8 @@ export default function UniversityLayout() {
         style={{ gridArea: 'content' }}
       >
         <div className="p-8">
-          <MockOutlet activeRoute={activeRoute} />
+          {/* <MockOutlet activeRoute={activeRoute} /> */}
+          <Dashboard/>
         </div>
       </main>
     </div>

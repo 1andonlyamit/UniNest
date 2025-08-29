@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import AuthForm from '../../components/forms/AuthForm'
 import { signupUniversityApi } from '../../api/auth'
+import { useToast } from '../../context/ToastContext'
 
 const roleIdToLanding = {
   1: '/admin',
@@ -13,13 +14,23 @@ const roleIdToLanding = {
 export default function SignupPage() {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
+  const { showSuccess, showError } = useToast()
 
   const handleSignup = async ({ name, address, email, phone, password }) => {
     setLoading(true)
     try {
       const res = await signupUniversityApi({ name, address, email, phone, password })
+      
+      // Show success message
+      showSuccess('Account created successfully! Redirecting to login...', 3000);
+      
       // After successful university registration, redirect to login
-      navigate('/login')
+      setTimeout(() => {
+        navigate('/login')
+      }, 1500);
+    } catch (error) {
+      // Show error message
+      showError(error.message || 'Signup failed. Please try again.');
     } finally {
       setLoading(false)
     }

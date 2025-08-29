@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'   // ✅ Added import
+import { Link } from 'react-router-dom'
 import Input from '../ui/Input'
 import Button from '../ui/Button'
+import Spinner from '../ui/Spinner'
 import { GraduationCap, User, Mail, Lock, Users } from 'lucide-react'
 
 export default function AuthForm({ mode = 'login', onSubmit, submitting = false }) {
@@ -172,8 +173,8 @@ export default function AuthForm({ mode = 'login', onSubmit, submitting = false 
             <span className="relative z-10 flex items-center justify-center">
               {submitting ? (
                 <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-white/30 border-t-white mr-2" />
-                  {isLogin ? 'Signing in...' : 'Creating account...'}
+                  <Spinner size="sm" color="white" />
+                  <span className="ml-2">{isLogin ? 'Signing in...' : 'Creating account...'}</span>
                 </>
               ) : (
                 <>
