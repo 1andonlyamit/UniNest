@@ -4,9 +4,10 @@ class AccountsController {
     }
 
     async login(req, res) {
-        const { email, password } = req.body;
-        if (!email || !password) {
-            return res.status(400).json({ message: "Email and password are required." });
+        const { email, password, role_id } = req.body;
+
+        if (!email || !password || !role_id) {
+            return res.status(400).json({ message: "Email, password and role_id are required." });
         }
 
         try {
@@ -16,7 +17,7 @@ class AccountsController {
             }
             return res.status(200).json(result);
         } catch (error) {
-            return res.status(500).json({ message: "Server error.", error });
+            return res.status(500).json({ message: "Server error.", error: error.message });
         }
     }
 
@@ -35,7 +36,7 @@ class AccountsController {
 
         const universityData = {
             email, password, name, address: address || null, phone: phone || null,
-            role_id: 2, // Default role for university
+            role_id: 2, // University
             status: 'active',
             is_email_verified: false
         };
@@ -58,7 +59,7 @@ class AccountsController {
             if (error.code === 'ER_DUP_ENTRY') {
                 return res.status(409).json({ message: "Email already exists." });
             }
-            return res.status(500).json({ message: "Server error.", error });
+            return res.status(500).json({ message: "Server error.", error: error.message });
         }
     }
 }
