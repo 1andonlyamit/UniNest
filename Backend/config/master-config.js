@@ -14,5 +14,17 @@ module.exports = {
         password: database_password,
         database: database,
         port: database_port
+    },
+
+    mail: {
+        host: "smtp.gmail.com",   // Gmail SMTP host
+        port: 465,                // SSL port
+        secure: true,             // true for port 465, false for 587
+        auth: {
+            user: "ahhswk530@gmail.com",  // Gmail address
+            pass: "soxd pfxn ihzo rhvc"        // Gmail app password
+        },
+        from: '" UniNest" <UniNest@hackathrone.com>' // sender name + email
     }
+
 }

@@ -1,6 +1,6 @@
 // src/services/database.service.js
 const mysql = require('mysql2/promise');
-const config = require('../config/master-config');
+const config = require('../config/config');
 const fs = require('fs');
 const path = require('path');
 
