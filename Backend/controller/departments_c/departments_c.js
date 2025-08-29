@@ -1,108 +1,105 @@
+const DatabaseService = require("../../services/dbhelper");
+
 class DepartmentsController {
     constructor() {
-        this.departmentModel = new (require("../../model/departments_m/departments_m"));
+        this.dbService = new DatabaseService();
     }
 
     // CREATE
     async create(req, res) {
-        const { university_id, name, department_coordinator_name } = req.body;
-
-        if (!university_id || !name) {
-            return res.status(400).json({ message: "University ID and department name are required." });
-        }
-
-        const departmentData = {
-            university_id,
-            name,
-            department_coordinator_name: department_coordinator_name || null
-        };
-
         try {
-            const result = await this.departmentModel.createDepartment(departmentData);
-            if (!result) {
-                return res.status(400).json({ message: "Department creation failed." });
-            }
-            return res.status(201).json({
+            const { university_id, name, department_coordinator_name } = req.body;
+
+            const query = `
+                INSERT INTO departments (university_id, name, department_coordinator_name)
+                VALUES (?, ?, ?)
+            `;
+
+            const result = await this.dbService.executeQuery(query, [
+                university_id,
+                name,
+                department_coordinator_name
+            ]);
+
+            res.status(201).json({
                 message: "Department created successfully",
-                data: result
+                departmentId: result.insertId
             });
-        } catch (error) {
-            return res.status(500).json({ message: "Server error.", error });
+        } catch (err) {
+            console.error("Error creating department:", err);
+            res.status(500).json({ message: "Server error", error: err.message });
         }
     }
 
-    // READ ALL
+    // READ all
     async getAll(req, res) {
         try {
-            const departments = await this.departmentModel.getAllDepartments();
-            return res.status(200).json(departments);
-        } catch (error) {
-            return res.status(500).json({ message: "Server error.", error });
+            const query = "SELECT * FROM departments";
+            const result = await this.dbService.executeQuery(query);
+            res.json(result);
+        } catch (err) {
+            res.status(500).json({ message: "Server error", error: err.message });
         }
     }
 
-    // READ ONE
+    // READ one
     async getOne(req, res) {
-        const { id } = req.params;
-        if (!id) {
-            return res.status(400).json({ message: "Department ID is required." });
-        }
-
         try {
-            const department = await this.departmentModel.getDepartmentById(id);
-            if (!department) {
-                return res.status(404).json({ message: "Department not found." });
+            const { id } = req.params;
+            const query = "SELECT * FROM departments WHERE id = ?";
+            const result = await this.dbService.executeQuery(query, [id]);
+
+            if (result.length === 0) {
+                return res.status(404).json({ message: "Department not found" });
             }
-            return res.status(200).json(department);
-        } catch (error) {
-            return res.status(500).json({ message: "Server error.", error });
+            res.json(result[0]);
+        } catch (err) {
+            res.status(500).json({ message: "Server error", error: err.message });
         }
     }
 
     // UPDATE
     async update(req, res) {
-        const { id } = req.params;
-        const { university_id, name, department_coordinator_name } = req.body;
-
-        if (!id || !university_id || !name) {
-            return res.status(400).json({ message: "Department ID, university ID and department name are required." });
-        }
-
-        const departmentData = {
-            university_id,
-            name,
-            department_coordinator_name: department_coordinator_name || null
-        };
-
         try {
-            const updated = await this.departmentModel.updateDepartment(id, departmentData);
-            if (!updated) {
-                return res.status(404).json({ message: "Department not found or not updated." });
+            const { id } = req.params;
+            const { name, department_coordinator_name } = req.body;
+
+            const query = `
+                UPDATE departments
+                SET name = ?, department_coordinator_name = ?
+                WHERE id = ?
+            `;
+
+            const result = await this.dbService.executeQuery(query, [
+                name,
+                department_coordinator_name,
+                id
+            ]);
+
+            if (result.affectedRows === 0) {
+                return res.status(404).json({ message: "Department not found" });
             }
-            return res.status(200).json({
-                message: "Department updated successfully",
-                data: updated
-            });
-        } catch (error) {
-            return res.status(500).json({ message: "Server error.", error });
+
+            res.json({ message: "Department updated successfully" });
+        } catch (err) {
+            res.status(500).json({ message: "Server error", error: err.message });
         }
     }
 
     // DELETE
     async delete(req, res) {
-        const { id } = req.params;
-        if (!id) {
-            return res.status(400).json({ message: "Department ID is required." });
-        }
-
         try {
-            const deleted = await this.departmentModel.deleteDepartment(id);
-            if (!deleted) {
-                return res.status(404).json({ message: "Department not found." });
+            const { id } = req.params;
+            const query = "DELETE FROM departments WHERE id = ?";
+            const result = await this.dbService.executeQuery(query, [id]);
+
+            if (result.affectedRows === 0) {
+                return res.status(404).json({ message: "Department not found" });
             }
-            return res.status(200).json({ message: "Department deleted successfully" });
-        } catch (error) {
-            return res.status(500).json({ message: "Server error.", error });
+
+            res.json({ message: "Department deleted successfully" });
+        } catch (err) {
+            res.status(500).json({ message: "Server error", error: err.message });
         }
     }
 }
