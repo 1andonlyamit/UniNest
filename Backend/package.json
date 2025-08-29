@@ -1,0 +1,25 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Hack-A-Throne Project => UniNest: AI-Powered Campus Recruitment Portal ",
+  "main": "server.js",
+  "scripts": {
+    "test": "npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1andonlyamit/UniNest.git"
+  },
+  "author": "Amit Suthar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/1andonlyamit/UniNest/issues"
+  },
+  "homepage": "https://github.com/1andonlyamit/UniNest#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.3",
+    "nodemon": "^3.1.10"
+  }
+}
