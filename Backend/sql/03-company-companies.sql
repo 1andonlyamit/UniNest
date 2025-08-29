@@ -1,4 +1,4 @@
-CREATE TABLE companies (
+CREATE TABLE IF NOT EXISTS companies (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     sector VARCHAR(255),

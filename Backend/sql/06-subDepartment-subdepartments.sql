@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS sub_departments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    department_id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_sub_department FOREIGN KEY (department_id) REFERENCES departments(id)
+);
