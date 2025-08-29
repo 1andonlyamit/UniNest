@@ -66,33 +66,6 @@ class DatabaseService {
         }
     }
 
-    // async executeTransaction(callback) {
-    //     let connection;
-    //     try {
-    //         if (!this.isConnected) {
-    //             await this.connect();
-    //         }
-
-    //         connection = await this.connection.getConnection();
-    //         await connection.beginTransaction();
-
-    //         const result = await callback(connection);
-
-    //         await connection.commit();
-    //         return result;
-    //     } catch (error) {
-    //         if (connection) {
-    //             await connection.rollback();
-    //         }
-    //         console.error('Transaction failed:', error);
-    //         throw error;
-    //     } finally {
-    //         if (connection) {
-    //             connection.release();
-    //         }
-    //     }
-    // }
-
     async tableExists(tableName) {
         try {
             const result = await this.executeQuery(
@@ -118,9 +91,35 @@ class DatabaseService {
                 console.log(`Created Table ${file}`);
             }
 
+            await this.seedRoles();
+
+
             console.log('All database tables initialized successfully.');
         } catch (error) {
             console.error('Error initializing database tables:', error);
+            throw error;
+        }
+    }
+
+    async seedRoles() {
+        try {
+            const roles = [
+                { id: 1, name: 'admin' },
+                { id: 2, name: 'university' },
+                { id: 3, name: 'student' },
+                { id: 4, name: 'company' }
+            ];
+
+            for (const role of roles) {
+                await this.executeQuery(
+                    `INSERT IGNORE INTO roles (id, role_name) VALUES (?, ?)`,
+                    [role.id, role.name]
+                );
+            }
+
+            console.log("Default roles seeded successfully.");
+        } catch (error) {
+            console.error("Error seeding roles:", error);
             throw error;
         }
     }

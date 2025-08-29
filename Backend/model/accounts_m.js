@@ -4,13 +4,34 @@ class AccountsModel {
     }
 
     async login(credentials) {
-        const { email, password } = credentials;
+        const { role_id, email, password } = credentials;
+
+        let table;
+        switch (role_id) {
+            case 1:
+                table = 'admins';
+                break;
+            case 2:
+                table = 'universities';
+                break;
+            case 3:
+                table = 'companies';
+                break;
+            case 4:
+                table = 'students';
+                break;
+            default:
+                throw new Error("Invalid role_id");
+        }
+
+        const query = `SELECT id, email, password, name, status, role_id 
+                   FROM ${table} 
+                   WHERE email = ? AND password = ?`;
 
         try {
-            const query = 'SELECT id, email, password, name, status, role_id FROM universities WHERE email = ? AND password = ?';
-            const [users] = await this.db.executeQuery(query, [email, password]);
+            const users = await this.db.executeQuery(query, [email, password]);
 
-            if (users.length === 0) {
+            if (!users || users.length === 0) {
                 return null;
             }
 
@@ -21,6 +42,7 @@ class AccountsModel {
             throw error;
         }
     }
+
 
     async registerUniversity(universityData) {
         const {
@@ -35,10 +57,10 @@ class AccountsModel {
         } = universityData;
 
         const query = `
-            INSERT INTO universities 
-            (email, password, name, address, phone, role_id, status, is_email_verified)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        `;
+        INSERT INTO universities 
+        (email, password, name, address, phone, role_id, status, is_email_verified)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `;
 
         const values = [
             email,
@@ -52,9 +74,10 @@ class AccountsModel {
         ];
 
         try {
-            const [result] = await this.db.executeQuery(query, values);
+            const result = await this.db.executeQuery(query, values); // ✅ no destructuring here
+
             if (result.insertId) {
-                const [university] = await this.db.execute(
+                const university = await this.db.executeQuery(
                     'SELECT id, name, email, status FROM universities WHERE id = ?',
                     [result.insertId]
                 );
@@ -65,6 +88,7 @@ class AccountsModel {
             throw error;
         }
     }
+
 }
 
 module.exports = AccountsModel;
