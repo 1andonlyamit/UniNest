@@ -3,6 +3,7 @@ const app = express();
 const config = require('./config/master-config');
 const DatabaseService = require('./services/dbhelper');
 const userController = new (require('./controller/accounts_c'));
+const otpRouter = require('./router/otp_r');
 const cors = require('cors');
 app.use(cors());
 const appPort = config.app_port;
@@ -18,6 +19,8 @@ app.use('/university/departments', departmentsRouter);
 app.post('/login', (req, res) => userController.login(req, res));
 app.post('/registerUniversity', (req, res) => userController.register(req, res));
 
+// OTP routes
+app.use('/otp', otpRouter);
 
 app.use((req, res) => {
     res.status(404).send({ "message": "Access Denied" });
