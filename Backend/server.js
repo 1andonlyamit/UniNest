@@ -22,6 +22,10 @@ app.post('/registerUniversity', (req, res) => userController.register(req, res))
 // OTP routes
 app.use('/otp', otpRouter);
 
+// Company routes
+const companyRouter = require('./router/company_r');
+app.use('/university/company', companyRouter);
+
 app.use((req, res) => {
     res.status(404).send({ "message": "Access Denied" });
 });
