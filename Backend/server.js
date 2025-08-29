@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const config = require('./config/master-config');
 const DatabaseService = require('./services/dbhelper');
-const userController = new (require('./controller/users_c'));
+const userController = new (require('./controller/accounts_c'));
 const cors = require('cors');
 app.use(cors());
 const appPort = config.app_port;
