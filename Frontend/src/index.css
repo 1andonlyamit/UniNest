@@ -1,9 +1,35 @@
 @import "tailwindcss";
 
 @theme {
-  --color-sunflower: #FFD700;
-  --color-warm: #FF8C00;
+  /* Colors */
+  --color-primary: #3E78B2;   /* Deep Blue */
+  --color-secondary: #88B7E7; /* Light Blue */
+  --color-muted: #848F99;     /* Gray */
+  --color-accent: #FFC145;    /* Warm Yellow */
+  --color-background: #FFFFFB;/* Off White */
+
+  /* Custom fonts */
   --font-sunflower: "Comic Neue", cursive;
   --font-warm: "Poppins", sans-serif;
+
+  /* Font sizes */
+  --text-display: 3rem;
+  --text-h1: 2.25rem;
+  --text-h2: 1.875rem;
+  --text-h3: 1.5rem;
+  --text-body: 1rem;
+  --text-small: 0.875rem;
+
+  /* Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+
+  /* Shadows */
+  --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
