@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { loadAuth, clearAuth } from '../api/auth'
 import { 
   Home,
   Target, 
@@ -48,18 +50,15 @@ const MockOutlet = ({ activeRoute }) => (
 )
 
 export default function UniversityLayout() {
+  const navigate = useNavigate()
   const [activeRoute, setActiveRoute] = useState('/university')
   const [notificationCount] = useState(3)
   
-  // Mock user data
-  const user = {
-    name: 'Maharaja Sayajirao University of Baroda',
-    email: 'john.doe@uninest.edu',
-    studentId: 'ST2024001'
-  }
+  const user = loadAuth()?.user
 
   const handleLogout = () => {
-    alert('Logout functionality would be implemented here!')
+    clearAuth()
+    navigate('/login')
   }
 
   const navigationItems = [

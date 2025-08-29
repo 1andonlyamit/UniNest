@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { loadAuth, clearAuth } from '../api/auth'
 import { 
   Home,
   Target, 
@@ -47,18 +49,15 @@ const MockOutlet = ({ activeRoute }) => (
 )
 
 export default function CompanyLayout() {
+  const navigate = useNavigate()
   const [activeRoute, setActiveRoute] = useState('/company')
   const [notificationCount] = useState(3)
   
-  // Mock user data
-  const user = {
-    name: 'HealthArk Solutions',
-    email: 'john.doe@uninest.edu',
-    studentId: 'ST2024001'
-  }
+  const user = loadAuth()?.user
 
   const handleLogout = () => {
-    alert('Logout functionality would be implemented here!')
+    clearAuth()
+    navigate('/login')
   }
 
   const navigationItems = [

@@ -1,25 +1,25 @@
 import React, { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import AuthForm from '../../components/forms/AuthForm'
-import { useAuth } from '../../context/AuthContext'
+import { signupUniversityApi } from '../../api/auth'
 
-const roleToLanding = {
-  admin: '/admin',
-  company: '/company',
-  student: '/student',
-  university: '/university',
+const roleIdToLanding = {
+  1: '/admin',
+  2: '/university',
+  3: '/company',
+  4: '/student',
 }
 
 export default function SignupPage() {
-  const { signup } = useAuth()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
 
-  const handleSignup = async ({ name, email, password, role }) => {
+  const handleSignup = async ({ name, address, email, phone, password }) => {
     setLoading(true)
     try {
-      const { user } = await signup({ name, email, password, role })
-      navigate(roleToLanding[user.role] || '/')
+      const res = await signupUniversityApi({ name, address, email, phone, password })
+      // After successful university registration, redirect to login
+      navigate('/login')
     } finally {
       setLoading(false)
     }

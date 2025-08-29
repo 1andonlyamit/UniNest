@@ -7,10 +7,15 @@ import { GraduationCap, User, Mail, Lock, Users } from 'lucide-react'
 export default function AuthForm({ mode = 'login', onSubmit, submitting = false }) {
   const isLogin = mode === 'login'
   const [form, setForm] = useState({
-    name: '',
+    // common
     email: '',
     password: '',
-    role: 'student',
+    // login only
+    role_id: 4, // default student
+    // signup (university) only
+    name: '',
+    address: '',
+    phone: '',
   })
   const [errors, setErrors] = useState({})
 
@@ -23,8 +28,10 @@ export default function AuthForm({ mode = 'login', onSubmit, submitting = false 
     const nextErrors = {}
     if (!form.email) nextErrors.email = 'Email is required'
     if (!form.password) nextErrors.password = 'Password is required'
-    if (!isLogin && !form.name) nextErrors.name = 'Name is required'
-    if (!isLogin && !form.role) nextErrors.role = 'Role is required'
+    if (isLogin && !form.role_id) nextErrors.role_id = 'Role is required'
+    if (!isLogin && !form.name) nextErrors.name = 'University name is required'
+    if (!isLogin && !form.address) nextErrors.address = 'Address is required'
+    if (!isLogin && !form.phone) nextErrors.phone = 'Phone is required'
     setErrors(nextErrors)
     return Object.keys(nextErrors).length === 0
   }
@@ -63,15 +70,35 @@ export default function AuthForm({ mode = 'login', onSubmit, submitting = false 
           </div>
 
           {!isLogin && (
-            <Input
-              label="Full Name"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              placeholder="Enter your full name"
-              error={errors.name}
-              icon={User}
-            />
+            <>
+              <Input
+                label="University Name"
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                placeholder="Enter university name"
+                error={errors.name}
+                icon={User}
+              />
+              <Input
+                label="Address"
+                name="address"
+                value={form.address}
+                onChange={handleChange}
+                placeholder="Enter address"
+                error={errors.address}
+                icon={User}
+              />
+              <Input
+                label="Phone"
+                name="phone"
+                value={form.phone}
+                onChange={handleChange}
+                placeholder="Enter phone"
+                error={errors.phone}
+                icon={User}
+              />
+            </>
           )}
 
           <Input
@@ -96,33 +123,33 @@ export default function AuthForm({ mode = 'login', onSubmit, submitting = false 
             icon={Lock}
           />
 
-          {!isLogin && (
+          {isLogin && (
             <div>
               <label className="mb-2 block text-[0.875rem] font-medium text-gray-700">
                 <Users className="inline w-4 h-4 mr-2" />
-                I am a...
+                Select role
               </label>
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { value: 'student', label: 'Student', emoji: '🎓' },
-                  { value: 'company', label: 'Company', emoji: '🏢' },
-                  { value: 'university', label: 'University', emoji: '🏛️' },
-                  { value: 'admin', label: 'Admin', emoji: '⚙️' }
+                  { id: 1, label: 'Admin', emoji: '⚙️' },
+                  { id: 2, label: 'University', emoji: '🏛️' },
+                  { id: 4, label: 'Company', emoji: '🏢' },
+                  { id: 3, label: 'Student', emoji: '🎓' },
                 ].map((option) => (
                   <label
-                    key={option.value}
+                    key={option.id}
                     className={`relative flex items-center justify-center p-3 rounded-[var(--radius-lg)] border-2 cursor-pointer transition-all duration-200 ${
-                      form.role === option.value
+                      form.role_id === option.id
                         ? 'border-primary bg-primary/10 text-primary'
                         : 'border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50'
                     }`}
                   >
                     <input
                       type="radio"
-                      name="role"
-                      value={option.value}
-                      checked={form.role === option.value}
-                      onChange={handleChange}
+                      name="role_id"
+                      value={option.id}
+                      checked={form.role_id === option.id}
+                      onChange={(e) => setForm((f) => ({ ...f, role_id: Number(e.target.value) }))}
                       className="sr-only"
                     />
                     <span className="text-lg mr-2">{option.emoji}</span>
@@ -130,7 +157,7 @@ export default function AuthForm({ mode = 'login', onSubmit, submitting = false 
                   </label>
                 ))}
               </div>
-              {errors.role && <p className="mt-2 text-[0.875rem] text-red-500 font-medium">{errors.role}</p>}
+              {errors.role_id && <p className="mt-2 text-[0.875rem] text-red-500 font-medium">{errors.role_id}</p>}
             </div>
           )}
 
