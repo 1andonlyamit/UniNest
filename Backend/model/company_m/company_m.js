@@ -1,4 +1,4 @@
-const DatabaseService = require('../services/dbhelper');
+const DatabaseService = require('../../services/dbhelper');
 const crypto = require('crypto');
 
 class CompanyModel {
