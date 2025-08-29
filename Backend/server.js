@@ -14,6 +14,8 @@ const dbService = new DatabaseService();
 
 
 //login-resister routes
+app.post('/login', (req, res) => userController.login(req, res));
+app.post('/register', (req, res) => userController.register(req, res));
 
 app.use((req, res) => {
     res.status(404).send({ "message": "Access Denied" });
