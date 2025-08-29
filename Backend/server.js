@@ -8,7 +8,7 @@ const cors = require('cors');
 app.use(cors());
 const appPort = config.app_port;
 app.use(express.json());
-const departmentsRouter = require('./routes/departments_r/departments_r');
+const departmentsRouter = require('./router/departments_r/departments_r');
 
 const dbService = new DatabaseService();
 
