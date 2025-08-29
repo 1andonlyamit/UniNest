@@ -1,7 +1,7 @@
 // src/routes/subdept_r.js
 const express = require('express');
 const router = express.Router();
-const SubDeptController = require('../controllers/subdept_c');
+const SubDeptController = require('../../controller/departments_c/subdept_c.js');
 
 const subDeptController = new SubDeptController();
 

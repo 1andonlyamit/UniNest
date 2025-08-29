@@ -8,14 +8,18 @@ const cors = require('cors');
 app.use(cors());
 const appPort = config.app_port;
 app.use(express.json());
+
+// Routers
 const departmentsRouter = require('./router/departments_r/departments_r');
+const subDeptRouter = require('./router/departments_r/subdept_r');   // ✅ new
 
 const dbService = new DatabaseService();
 
 // app.use(express.static(path.join(__dirname, 'public')));
 app.use('/university/departments', departmentsRouter);
+app.use('/university/subdepartments', subDeptRouter);  // ✅ new
 
-//login-resister routes
+// login-register routes
 app.post('/login', (req, res) => userController.login(req, res));
 app.post('/registerUniversity', (req, res) => userController.register(req, res));
 
@@ -25,6 +29,7 @@ app.use('/otp', otpRouter);
 app.use((req, res) => {
     res.status(404).send({ "message": "Access Denied" });
 });
+
 async function initializeDatabase() {
     try {
         console.log('Connecting to database...');
@@ -48,4 +53,3 @@ function startServer() {
 }
 
 initializeDatabase();
-
