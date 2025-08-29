@@ -18,6 +18,8 @@ const dbService = new DatabaseService();
 const classRouter = require('./router/departments_r/class_r');
 app.use('/university/classes', classRouter);
 
+const studentRouter = require('./router/student_r/student_r');
+app.use('/university/students', studentRouter);
 
 // app.use(express.static(path.join(__dirname, 'public')));
 app.use('/university/departments', departmentsRouter);

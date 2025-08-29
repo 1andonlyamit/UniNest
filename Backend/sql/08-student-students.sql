@@ -1,9 +1,10 @@
 CREATE TABLE IF NOT EXISTS students (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    full_name VARCHAR(50) NOT NULL,
     enrollment_num VARCHAR(100) UNIQUE NOT NULL,
     class_id INT NOT NULL,
     verification_status ENUM('pending','verified','rejected') DEFAULT 'pending',
-    role_id INT NOT NULL,
+    role_id INT NOT NULL DEFAULT 3,
     email VARCHAR(255) UNIQUE NOT NULL,
     phone VARCHAR(50),
     isBlacklisted BOOLEAN DEFAULT FALSE,
