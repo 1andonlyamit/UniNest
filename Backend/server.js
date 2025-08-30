@@ -21,6 +21,9 @@ app.use('/university/classes', classRouter);
 const studentRouter = require('./router/student_r/student_r');
 app.use('/university/students', studentRouter);
 
+const studentEducationRouter = require('./router/student_r/studentEducation_r');
+app.use('/university/students/education', studentEducationRouter);
+
 // app.use(express.static(path.join(__dirname, 'public')));
 app.use('/university/departments', departmentsRouter);
 app.use('/university/subdepartments', subDeptRouter);
