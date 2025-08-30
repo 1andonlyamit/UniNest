@@ -39,6 +39,11 @@ app.use('/otp', otpRouter);
 const companyRouter = require('./router/company_r/company_r');
 app.use('/university/company', companyRouter);
 
+// Student skills
+const studentSkillsRouter = require('./router/student_r/studentSkills_r');
+app.use('/university/students/skills', studentSkillsRouter);
+
+
 app.use((req, res) => {
     res.status(404).send({ "message": "Access Denied" });
 });
