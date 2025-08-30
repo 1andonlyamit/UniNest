@@ -17,7 +17,7 @@ const sizes = {
 }
 
 export default function Button({
-  as: Component = 'button',
+  as: Component = 'button', 
   variant = 'primary',
   size = 'md',
   className = '',

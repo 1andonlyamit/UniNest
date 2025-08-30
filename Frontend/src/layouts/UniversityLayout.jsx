@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation, Outlet } from 'react-router-dom'
 import { loadAuth, clearAuth } from '../api/auth'
 import { 
   Home,
@@ -9,53 +9,35 @@ import {
   Bell, 
   LogOut,
   GraduationCap,
-  Building2
+  Building2,
+  Building
 } from 'lucide-react'
-import Dashboard from '../pages/universityPages/Dashboard'
 
-// Mock components for demonstration
-const MockLink = ({ to, children, className, onClick }) => (
-  <div className={className} onClick={() => onClick && onClick(to)} style={{ cursor: 'pointer' }}>
-    {children}
-  </div>
-)
 
-const MockOutlet = ({ activeRoute }) => (
-  <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-    <h2 className="text-2xl font-bold text-gray-800 mb-4">
-      {activeRoute === '/university' ? 'Dashboard' : 
-       activeRoute === '/university/drives' ? 'Placement Drives' :
-       activeRoute === '/university/companies' ? 'Companies' :
-       activeRoute === '/university/students' ? 'Students' :
-       activeRoute === '/university/profile' ? 'Profile' :
-       activeRoute === '/university/settings' ? 'Settings' : 'Dashboard'}
-    </h2>
-    <div className="text-gray-600">
-      <p className="mb-4">Welcome to your {activeRoute === '/university' ? 'dashboard' : activeRoute.split('/').pop()}!</p>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-100">
-          <h3 className="font-semibold text-blue-800 mb-2">Quick Stats</h3>
-          <p className="text-blue-600 text-sm">Content for {activeRoute.split('/').pop() || 'dashboard'}</p>
-        </div>
-        <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-4 border border-green-100">
-          <h3 className="font-semibold text-green-800 mb-2">Recent Activity</h3>
-          <p className="text-green-600 text-sm">Latest updates and progress</p>
-        </div>
-        <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-lg p-4 border border-yellow-100">
-          <h3 className="font-semibold text-yellow-800 mb-2">Upcoming</h3>
-          <p className="text-yellow-600 text-sm">Tasks and deadlines</p>
-        </div>
-      </div>
+// Custom Link component that works with React Router
+const NavigationLink = ({ to, children, className }) => {
+  const navigate = useNavigate()
+  
+  const handleClick = () => {
+    navigate(to)
+  }
+
+  return (
+    <div className={className} onClick={handleClick} style={{ cursor: 'pointer' }}>
+      {children}
     </div>
-  </div>
-)
+  )
+}
 
 export default function UniversityLayout() {
   const navigate = useNavigate()
-  const [activeRoute, setActiveRoute] = useState('/university')
+  const location = useLocation()
   const [notificationCount] = useState(3)
   
   const user = loadAuth()?.user
+  // console.log('UniversityLayout - loadAuth():', loadAuth())
+  // console.log('UniversityLayout - user:', user)
+  // console.log('UniversityLayout - location.pathname:', location.pathname)
 
   const handleLogout = () => {
     clearAuth()
@@ -66,6 +48,7 @@ export default function UniversityLayout() {
     { icon: Home, label: 'Dashboard', path: '/university' },
     { icon: Target, label: 'Drives', path: '/university/drives' },
     { icon: Building2, label: 'Companies', path: '/university/companies' },
+    { icon: Building, label: 'Departments', path: '/university/departments' },
     { icon: GraduationCap, label: 'Students', path: '/university/students' },
     { icon: User, label: 'Profile', path: '/university/profile' },
     { icon: Settings, label: 'Settings', path: '/university/settings' },
@@ -73,9 +56,9 @@ export default function UniversityLayout() {
 
   const isActiveLink = (path) => {
     if (path === '/university') {
-      return activeRoute === '/university'
+      return location.pathname === '/university'
     }
-    return activeRoute.startsWith(path)
+    return location.pathname.startsWith(path)
   }
 
   return (
@@ -108,10 +91,10 @@ export default function UniversityLayout() {
               const isActive = isActiveLink(item.path)
               
               return (
-                <MockLink
+                <NavigationLink
                   key={item.path}
                   to={item.path}
-                  onClick={setActiveRoute}
+                  isActive={isActive}
                   className={`
                     group flex items-center gap-4 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 relative
                     ${isActive 
@@ -125,7 +108,7 @@ export default function UniversityLayout() {
                   {isActive && (
                     <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-white/30 rounded-l-full" />
                   )}
-                </MockLink>
+                </NavigationLink>
               )
             })}
           </div>
@@ -174,17 +157,6 @@ export default function UniversityLayout() {
 
           {/* Right - User and Notifications */}
           <div className="flex items-center gap-6">
-            {/* Search Bar */}
-            {/* <div className="hidden md:block">
-              <div className="relative">
-                <input 
-                  type="text" 
-                  placeholder="Search..."
-                  className="w-64 pl-4 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                />
-              </div>
-            </div> */}
-
             {/* Notifications */}
             <div className="relative">
               <button className="p-3 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200 relative">
@@ -227,14 +199,13 @@ export default function UniversityLayout() {
         </div>
       </header>
 
-      {/* Main Content Area */}
+      {/* Main Content Area with Outlet */}
       <main 
         className="overflow-auto bg-gray-50" 
         style={{ gridArea: 'content' }}
       >
         <div className="p-8">
-          {/* <MockOutlet activeRoute={activeRoute} /> */}
-          <Dashboard/>
+          <Outlet />
         </div>
       </main>
     </div>
