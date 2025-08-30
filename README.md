@@ -5,7 +5,7 @@
 ---
 
 ## Project Overview
-UniNest is a unified AI-driven platform that digitally transforms campus placements by connecting **Universities, Students, and Companies**. It streamlines onboarding, drive scheduling, resume verification, and offer management while providing AI-powered insights for smarter recruitment decisions.
+UniNest is a unified platform that digitally transforms campus placements by connecting **Universities, Students, and Companies**. It streamlines onboarding, drive scheduling, resume verification, and offer management while providing AI-powered insights for smarter recruitment decisions.
 
 ---
 
@@ -15,7 +15,7 @@ UniNest is a unified AI-driven platform that digitally transforms campus placeme
 - Student onboarding with email/OTP verification.
 - Department → Sub-Department → Class management.
 - Drive creation (University-driven or Company-requested).
-- AI-driven student recommendation & filtering.
+- Student recommendation & filtering.
 - Resume verification workflow & profile locking.
 - Real-time analytics dashboards.
 
@@ -40,10 +40,10 @@ UniNest is a unified AI-driven platform that digitally transforms campus placeme
 ---
 
 ## Tech Stack
-- **Database:** MSSQL  
-- **Backend:** Node.js + Express.js (Sequelize ORM)  
-- **Frontend:** React + Vite / Next.js  
-- **Auth:** JWT + OTP  
-- **API Testing:** Postman  
+- **Database:** MySQL
+- **Backend:** Node.js + Express.js
+- **Frontend:** React + Vite
+- **Auth:** Email + OTP
+- **API Testing:** Postman
 
 ---
