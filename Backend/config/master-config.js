@@ -21,8 +21,8 @@ module.exports = {
         port: 465,                // SSL port
         secure: true,             // true for port 465, false for 587
         auth: {
-            user: "ahhswk530@gmail.com",  // Gmail address
-            pass: "soxd pfxn ihzo rhvc"        // Gmail app password
+            user: "",  // Gmail address
+            pass: ""        // Gmail app password
         },
         from: '" UniNest" <UniNest@hackathrone.com>' // sender name + email
     }
